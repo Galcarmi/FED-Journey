@@ -1,0 +1,5 @@
+export const HTTPStatuses = {
+  BAD_REQUEST: 400,
+  UNAUTHENTICATED:403,
+  INTERNAL_SERVER_ERROR: 500,
+};

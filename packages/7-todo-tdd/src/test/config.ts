@@ -3,4 +3,4 @@ import Adapter from 'enzyme-adapter-react-16';
 
 enzyme.configure({ adapter: new Adapter() });
 
-jest.mock('../services/TodoService', () => require('../__mocks__/TodoService'));
+jest.mock('../services/TodoService');

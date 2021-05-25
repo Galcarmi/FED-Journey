@@ -1,24 +1,35 @@
-import React, { ChangeEvent, FC, ReactElement, useContext, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { jss } from '../../styles/config';
 import { TodoItem } from '../todo-item/TodoItem';
 import { ITodoContext, TodoContext } from '../../context/TodoContext';
-import withTodosContex from '../HOC/withTodos';
+import withTodosContext from '../HOC/withTodos';
 import { ITodoDTO } from 'fed-todo-journey_todo-common';
 import { commonStyles, colors } from '../../styles/commonStyles';
+import { dataHooks } from '../utils/dataHooks';
 
 const TodoApp: FC<{}> = (): ReactElement => {
   const [todoInputValue, setTodoInputValue] = useState<string>('');
-  const { todosService, todos, setTodos } = useContext<ITodoContext>(TodoContext);
+  const { todosService, todos, setTodos } =
+    useContext<ITodoContext>(TodoContext);
 
   const onAddClick = async (): Promise<void> => {
+    console.log('click');
+    console.log(todoInputValue,'value');
     addTodo();
-  }
+  };
 
   const onTodoInputEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
       addTodo();
     }
-  }
+  };
 
   const addTodo = async (): Promise<void> => {
     if (todoInputValue) {
@@ -27,31 +38,43 @@ const TodoApp: FC<{}> = (): ReactElement => {
       setTodos({ ...todos });
       setTodoInputValue('');
     }
-  }
-
+  };
 
   useEffect(() => {
-    todosService.getAllTodos().then(todos => setTodos({ ...todos }))
-  }, [])
+    todosService.getAllTodos().then((todos) => setTodos({ ...todos }));
+  }, []);
 
   return (
     <div className={s.container}>
       <div className={s.todo}>
         <div className={s.todo__list}>
-          {Object.values(todos).map(todo => <TodoItem key={todo._id} todo={todo} />)}
+          {Object.values(todos).map((todo) => (
+            <TodoItem key={todo._id} todo={todo} />
+          ))}
         </div>
         <div className={s.todo__inputContainer}>
-          <input type='text'
+          <input
+            type="text"
             className={s.todo__inputContainer__input}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => { setTodoInputValue(e.target.value) }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setTodoInputValue(e.target.value);
+            }}
             value={todoInputValue}
-            onKeyPress={onTodoInputEnter} />
-          <button className={s.todo__inputContainer__addBtn} onClick={onAddClick}>Add</button>
+            onKeyPress={onTodoInputEnter}
+            data-hook={dataHooks.TODO_INPUT}
+          />
+          <button
+            className={s.todo__inputContainer__addBtn}
+            onClick={onAddClick}
+            data-hook={dataHooks.ADD_BTN}
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export const s = jss
   .createStyleSheet({
@@ -64,8 +87,9 @@ export const s = jss
         ...commonStyles.RLMarginMPercent,
       },
       todoApp__inputContainer: {
-        width: `${100 - +commonStyles.RLMarginMPercent.marginLeft.split('%')[0] * 2
-          }%`,
+        width: `${
+          100 - +commonStyles.RLMarginMPercent.marginLeft.split('%')[0] * 2
+        }%`,
       },
     },
     '@media only screen and (max-width: 400px)': {
@@ -73,8 +97,9 @@ export const s = jss
         ...commonStyles.RLMarginSPercent,
       },
       todoApp__inputContainer: {
-        width: `${100 - +commonStyles.RLMarginSPercent.marginLeft.split('%')[0] * 2
-          }%`,
+        width: `${
+          100 - +commonStyles.RLMarginSPercent.marginLeft.split('%')[0] * 2
+        }%`,
       },
     },
     todo: {
@@ -86,16 +111,18 @@ export const s = jss
       position: 'relative',
     },
     todo__list: {
-      paddingBottom: `${commonStyles.minTodoItemHeight.minHeight.split('px')[0]
-        }px`,
+      paddingBottom: `${
+        commonStyles.minTodoItemHeight.minHeight.split('px')[0]
+      }px`,
     },
     todo__inputContainer: {
       ...commonStyles.TPpaddingS,
       ...commonStyles.TGreyBorder,
       display: 'flex',
       position: 'fixed',
-      width: `${100 - +commonStyles.RLMarginLPercent.marginLeft.split('%')[0] * 2
-        }%`,
+      width: `${
+        100 - +commonStyles.RLMarginLPercent.marginLeft.split('%')[0] * 2
+      }%`,
       bottom: 0,
       zIndex: 1000,
       backgroundColor: colors.white,
@@ -144,5 +171,4 @@ export const s = jss
   })
   .attach().classes;
 
-
-export default withTodosContex(TodoApp);
+export default withTodosContext(TodoApp);

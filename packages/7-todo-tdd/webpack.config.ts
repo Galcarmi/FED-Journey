@@ -3,6 +3,7 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import { utils } from 'fed-todo-journey_todo-common';
 
 const devTool = utils.isTestEnv() ? 'eval' : 'source-map';
+const outputPath = utils.isE2E() ? path.resolve(__dirname, '../express-server/public') : path.resolve(__dirname, './test-server/public')
 
 module.exports = {
   mode: 'development',
@@ -10,7 +11,7 @@ module.exports = {
     bundle: './src/components/root-components/index.tsx',
   },
   output: {
-    path: path.resolve(__dirname, '../express-server/public'),
+    path: outputPath,
     filename: 'bundle.js',
   },
   devServer: {

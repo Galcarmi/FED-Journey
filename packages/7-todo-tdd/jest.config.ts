@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: '(\\.|/)(test|spec)\\.tsx?$',
+  testRegex: '(\\.|/)(test|spec|e2e)\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   setupFilesAfterEnv: ['./src/test/config.ts'],
 };
